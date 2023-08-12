@@ -6,12 +6,34 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Color from '../../Constant/Color';
 import Lable from '../../Components/Lable';
 import NavigationStrings from '../../Constant/NavigationStrings';
+import firestore from '@react-native-firebase/firestore';
 
 export default function CreateAC({navigation}) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [eay, setEay] = useState(true);
+
+  const FireBaseLogin = async () => {
+    firestore()
+      .collection('Users')
+      .where('email', '==', email)
+      .get()
+      .then(querySnapsho => {
+        if (querySnapsho._docs != []) {
+          if (querySnapsho._docs[0]._data.password == password) {
+            mainScreen(querySnapsho._docs[0]._data);
+          }
+        }
+      })
+      .catch(error => {
+        console.log('error');
+      });
+  };
+  const mainScreen = () => {};
   return (
     <ScrollView
       style={{
@@ -62,10 +84,8 @@ export default function CreateAC({navigation}) {
             paddingLeft: 20,
           }}
           placeholder="Enter your  Email"
-          //value={value}
-          //onChangeText={onChangeText}
-          //keyboardType={keyboardType}
-          //secureTextEntry={secureTextEntry}
+          value={email}
+          onChangeText={setEmail}
         />
       </View>
       <Lable lable="Password" />
@@ -75,7 +95,7 @@ export default function CreateAC({navigation}) {
           width: '90%',
           backgroundColor: Color.GEAY,
           borderRadius: 5,
-          marginBottom: 110,
+          marginBottom: 25,
           alignSelf: 'center',
         }}>
         <TextInput
@@ -84,29 +104,39 @@ export default function CreateAC({navigation}) {
             fontSize: 15,
             paddingLeft: 20,
           }}
-          placeholder="Enter your email password"
-          //value={value}
-          //onChangeText={onChangeText}
-          //keyboardType={keyboardType}
-          //secureTextEntry={secureTextEntry}
+          placeholder="Enter your  password"
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={eay}
         />
         <TouchableOpacity
+          onPress={() => setEay(false)}
           style={{
             position: 'absolute',
             right: 10,
             bottom: 15,
           }}>
-          <Image
-            style={{
-              height: 20,
-              width: 20,
-            }}
-            source={require('../../Image/view.png')}
-          />
+          {eay ? (
+            <Image
+              style={{
+                height: 20,
+                width: 20,
+              }}
+              source={require('../../Image/view.png')}
+            />
+          ) : (
+            <Image
+              style={{
+                height: 20,
+                width: 20,
+              }}
+              source={require('../../Image/invisible.png')}
+            />
+          )}
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        //onPress={() => navigation.navigate(NavigationStrings.HOME)}
+        onPress={() => FireBaseLogin()}
         style={{
           height: 50,
           backgroundColor: Color.DEEPPINK,

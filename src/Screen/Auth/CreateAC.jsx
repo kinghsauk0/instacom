@@ -158,7 +158,6 @@ export default function CreateAC() {
             placeholder="Enter your  password"
             value={password}
             onChangeText={setPassword}
-            keyboardType="number-pad"
             secureTextEntry={eay}
           />
           <TouchableOpacity
@@ -206,7 +205,6 @@ export default function CreateAC() {
             placeholder="Enter your email Comfrim password"
             value={confrim}
             onChangeText={setConfrim}
-            keyboardType="number-pad"
             secureTextEntry={eay}
           />
           <TouchableOpacity
