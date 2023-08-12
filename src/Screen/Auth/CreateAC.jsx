@@ -6,16 +6,15 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Color from '../../Constant/Color';
 import Lable from '../../Components/Lable';
-import NavigationStrings from '../../Constant/NavigationStrings';
 import firestore from '@react-native-firebase/firestore';
 import uuid from 'react-native-uuid';
 import {useNavigation} from '@react-navigation/native';
 import Loder from '../../Components/Loder';
+import Alert from '../../Components/Alert';
 
 const userId = uuid.v4();
 export default function CreateAC() {
@@ -23,8 +22,9 @@ export default function CreateAC() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confrim, setConfrim] = useState('');
-  const [visible, setVisible] = useState(true);
+  const [eay, setEay] = useState(true);
   const [loder, setLoder] = useState(false);
+  const [onAlert, setOnAlet] = useState(false);
   const navigation = useNavigation();
 
   const fireBaseData = async () => {
@@ -159,16 +159,16 @@ export default function CreateAC() {
             value={password}
             onChangeText={setPassword}
             keyboardType="number-pad"
-            secureTextEntry={visible}
+            secureTextEntry={eay}
           />
           <TouchableOpacity
-            onPress={() => setVisible(false)}
+            onPress={() => setEay(false)}
             style={{
               position: 'absolute',
               right: 10,
               bottom: 15,
             }}>
-            {visible ? (
+            {eay ? (
               <Image
                 style={{
                   height: 20,
@@ -207,16 +207,16 @@ export default function CreateAC() {
             value={confrim}
             onChangeText={setConfrim}
             keyboardType="number-pad"
-            secureTextEntry={visible}
+            secureTextEntry={eay}
           />
           <TouchableOpacity
-            onPress={() => setVisible(false)}
+            onPress={() => setEay(false)}
             style={{
               position: 'absolute',
               right: 10,
               bottom: 15,
             }}>
-            {visible ? (
+            {eay ? (
               <Image
                 style={{
                   height: 20,
@@ -245,8 +245,7 @@ export default function CreateAC() {
               setEmail('');
               setPassword('');
               setConfrim('');
-              setVisible(true);
-              Alert.alert('Recheck Your data');
+              setOnAlet(true);
             }
           }}
           style={{
@@ -270,6 +269,7 @@ export default function CreateAC() {
           </Text>
         </TouchableOpacity>
         <Loder visible={loder} />
+        <Alert visible={onAlert} onPress={() => setOnAlet(false)} />
       </KeyboardAvoidingView>
     </ScrollView>
   );
