@@ -11,6 +11,7 @@ import Color from '../../Constant/Color';
 import Lable from '../../Components/Lable';
 import NavigationStrings from '../../Constant/NavigationStrings';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CreateAC({navigation}) {
   const [email, setEmail] = useState('');
@@ -33,7 +34,14 @@ export default function CreateAC({navigation}) {
         console.log('error');
       });
   };
-  const mainScreen = () => {};
+  const mainScreen = async data => {
+    try {
+      await AsyncStorage.setItem('fullName', data.fullName);
+      await AsyncStorage.setItem('email', data.email);
+      await AsyncStorage.setItem('password', data.password);
+      await AsyncStorage.setItem('user', data.user);
+    } catch (error) {}
+  };
   return (
     <ScrollView
       style={{
