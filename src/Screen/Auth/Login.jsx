@@ -11,9 +11,8 @@ import Color from '../../Constant/Color';
 import Lable from '../../Components/Lable';
 import NavigationStrings from '../../Constant/NavigationStrings';
 import firestore from '@react-native-firebase/firestore';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function CreateAC({navigation}) {
+export default function Login({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eay, setEay] = useState(true);
@@ -24,24 +23,24 @@ export default function CreateAC({navigation}) {
       .where('email', '==', email)
       .get()
       .then(querySnapsho => {
-        if (querySnapsho._docs != []) {
-          if (querySnapsho._docs[0]._data.password == password) {
-            mainScreen(querySnapsho._docs[0]._data);
-          }
-        }
+        const fireData = querySnapsho._docs[0]._data;
+        //console.log(fireData);
+        getData(fireData);
       })
       .catch(error => {
-        console.log('error');
+        console.log(error);
       });
   };
-  const mainScreen = async data => {
-    try {
-      await AsyncStorage.setItem('fullName', data.fullName);
-      await AsyncStorage.setItem('email', data.email);
-      await AsyncStorage.setItem('password', data.password);
-      await AsyncStorage.setItem('user', data.user);
-    } catch (error) {}
+
+  const getData = async data => {
+    console.log(data);
+
+    await AsyncStorage.setItem('fullName', data.fullName);
+    await AsyncStorage.setItem('email', data.email);
+    await AsyncStorage.setItem('password', data.password);
+    await AsyncStorage.setItem('user', data.user);
   };
+
   return (
     <ScrollView
       style={{
@@ -144,7 +143,10 @@ export default function CreateAC({navigation}) {
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => FireBaseLogin()}
+        onPress={() => {
+          FireBaseLogin();
+          // navigation.navigate(NavigationStrings.HOME);
+        }}
         style={{
           height: 50,
           backgroundColor: Color.DEEPPINK,

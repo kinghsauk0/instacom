@@ -2,13 +2,26 @@ import {View, Text, Image} from 'react-native';
 import React, {useEffect} from 'react';
 import Color from '../../Constant/Color';
 import NavigationStrings from '../../Constant/NavigationStrings';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
-export default function Splash({navigation}) {
+export default function Splash() {
+  const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      navigation.navigate(NavigationStrings.LOGIN);
+      loginUser();
     }, 3000);
-  });
+  }, []);
+
+  const loginUser = async () => {
+    const userId = await AsyncStorage.getItem('user');
+    if (userId != null) {
+      navigation.navigate(NavigationStrings.HOME);
+    } else {
+      navigation.navigate(NavigationStrings.LOGIN);
+    }
+  };
+
   return (
     <View
       style={{
