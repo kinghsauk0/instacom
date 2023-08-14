@@ -9,16 +9,20 @@ export default function Splash() {
   const navigation = useNavigation();
   useEffect(() => {
     setTimeout(() => {
-      loginUser();
+      getData();
     }, 3000);
   }, []);
 
-  const loginUser = async () => {
-    const userId = await AsyncStorage.getItem('user');
-    if (userId != null) {
-      navigation.navigate(NavigationStrings.HOME);
-    } else {
-      navigation.navigate(NavigationStrings.LOGIN);
+  const getData = async () => {
+    try {
+      const storData = await AsyncStorage.getItem('user');
+      if (storData !== null) {
+        navigation.navigate(NavigationStrings.HOME);
+      } else {
+        navigation.navigate(NavigationStrings.LOGIN);
+      }
+    } catch (e) {
+      console.log('error');
     }
   };
 

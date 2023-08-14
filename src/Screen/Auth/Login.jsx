@@ -5,14 +5,18 @@ import {
   Image,
   ScrollView,
   TextInput,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import Color from '../../Constant/Color';
 import Lable from '../../Components/Lable';
 import NavigationStrings from '../../Constant/NavigationStrings';
 import firestore from '@react-native-firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useNavigation} from '@react-navigation/native';
 
-export default function Login({navigation}) {
+export default function Login() {
+  const navigation = useNavigation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [eay, setEay] = useState(true);
@@ -24,21 +28,34 @@ export default function Login({navigation}) {
       .get()
       .then(querySnapsho => {
         const fireData = querySnapsho._docs[0]._data;
-        //console.log(fireData);
-        getData(fireData);
+        storeData(fireData);
       })
       .catch(error => {
         console.log(error);
       });
   };
 
-  const getData = async data => {
-    console.log(data);
-
-    await AsyncStorage.setItem('fullName', data.fullName);
-    await AsyncStorage.setItem('email', data.email);
-    await AsyncStorage.setItem('password', data.password);
-    await AsyncStorage.setItem('user', data.user);
+  const storeData = async value => {
+    try {
+      await AsyncStorage.setItem('user', value.user);
+      await AsyncStorage.setItem('email', value.email);
+      await AsyncStorage.setItem('fullName', value.fullName);
+      await AsyncStorage.setItem('password', value.password);
+    } catch (e) {
+      // saving error
+    }
+  };
+  const nextPage = async () => {
+    try {
+      const passwordData = await AsyncStorage.getItem('password');
+      if (passwordData !== null) {
+        if (passwordData == password) {
+          navigation.navigate(NavigationStrings.HOME);
+        } else {
+          Alert.alert('password wrong');
+        }
+      }
+    } catch (error) {}
   };
 
   return (
@@ -145,7 +162,7 @@ export default function Login({navigation}) {
       <TouchableOpacity
         onPress={() => {
           FireBaseLogin();
-          // navigation.navigate(NavigationStrings.HOME);
+          nextPage();
         }}
         style={{
           height: 50,
