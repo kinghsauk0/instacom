@@ -9,8 +9,8 @@ import {store} from './src/App/store/store';
 import {Provider} from 'react-redux';
 
 const RDX = () => (
-  //<Provider store={store}>
-  <App />
-  //</Provider>
+  <Provider store={store}>
+    <App />
+  </Provider>
 );
 AppRegistry.registerComponent(appName, () => RDX);

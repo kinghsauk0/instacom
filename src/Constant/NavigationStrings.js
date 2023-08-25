@@ -5,4 +5,5 @@ export default {
   FORGOTPASSWORD: 'ForgotPassword',
   HOME: 'Home',
   DRAWERNAV: 'DrawerNav',
+  PROFILE: 'Profile',
 };

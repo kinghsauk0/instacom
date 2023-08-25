@@ -1,5 +1,5 @@
 import {View, Text, Modal, ActivityIndicator, Dimensions} from 'react-native';
-import React, {useState} from 'react';
+import React from 'react';
 import Color from '../Constant/Color';
 
 const {Hight, Width} = Dimensions.get('window');
